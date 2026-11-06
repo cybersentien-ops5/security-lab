@@ -1,0 +1,13 @@
+category	name	method	path	http_status
+sqli	login_or_1_equals_1	POST	/rest/user/login	403
+sqli	search_union_select	GET	/rest/products/search?q=%27))%20UNION%20SELECT%20id,email,password,4,5,6,7,8,9%20FROM%20Users--	403
+sqli	search_or_1_equals_1	GET	/rest/products/search?q=%27%20OR%201=1--	403
+xss	script_tag	GET	/rest/products/search?q=%3Cscript%3Ealert(1)%3C/script%3E	403
+xss	iframe_javascript	GET	/rest/products/search?q=%3Ciframe%20src=%22javascript:alert(1)%22%3E	403
+xss	img_onerror	GET	/rest/products/search?q=%3Cimg%20src=x%20onerror=alert(1)%3E	403
+scan	probe/.git/HEAD	GET	/.git/HEAD	403
+scan	probe/.env	GET	/.env	403
+scan	probe/.htaccess	GET	/.htaccess	403
+scan	probe/.svn/entries	GET	/.svn/entries	403
+scan	probe/wp-config.php.bak	GET	/wp-config.php.bak	403
+scan	probe/backup.sql	GET	/backup.sql	403

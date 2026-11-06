@@ -1,0 +1,4 @@
+suricata-1  | Checking for capability sys_nice: yes
+suricata-1  | Checking for capability net_admin: yes
+suricata-1  | i: suricata: This is Suricata version 7.0.17 RELEASE running in SYSTEM mode
+suricata-1  | i: threads: Threads created -> RX: 1 W: 4 FM: 1 FR: 1   Engine started.

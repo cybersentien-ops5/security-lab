@@ -1,0 +1,45 @@
+ Network seclab_default Creating 
+ Network seclab_default Created 
+ Image wazuh/wazuh-certs-generator:0.0.2 Pulling 
+ 5249716d429c Pulling fs layer 0B
+ 17d0386c2fff Pulling fs layer 0B
+ d7003467fd14 Pulling fs layer 0B
+ 7ce91ec7d1d3 Pulling fs layer 0B
+ d7003467fd14 Download complete 0B
+ 17d0386c2fff Downloading 27.51MB
+ 5249716d429c Download complete 0B
+ 17d0386c2fff Downloading 27.51MB
+ 7ce91ec7d1d3 Downloading 10.49MB
+ 17d0386c2fff Download complete 0B
+ 7ce91ec7d1d3 Downloading 26.21MB
+ 17d0386c2fff Extracting 1B
+ 7ce91ec7d1d3 Downloading 41.08MB
+ 17d0386c2fff Extracting 1B
+ 7ce91ec7d1d3 Downloading 41.08MB
+ 17d0386c2fff Extracting 1B
+ 7ce91ec7d1d3 Download complete 0B
+ 17d0386c2fff Extracting 1B
+ 17d0386c2fff Pull complete 0B
+ 7ce91ec7d1d3 Extracting 1B
+ 7ce91ec7d1d3 Extracting 1B
+ 7ce91ec7d1d3 Extracting 1B
+ d7003467fd14 Pull complete 0B
+ 5249716d429c Pull complete 0B
+ 7ce91ec7d1d3 Pull complete 0B
+ Image wazuh/wazuh-certs-generator:0.0.2 Pulled 
+ Container seclab-certs-run-68df53b19dfd Creating 
+ Container seclab-certs-run-68df53b19dfd Created 
+The tool to create the certificates exists in the in Packages bucket
+06/11/2026 07:27:38 INFO: Generating the root certificate.
+06/11/2026 07:27:38 INFO: Generating Admin certificates.
+06/11/2026 07:27:38 INFO: Admin certificates created.
+06/11/2026 07:27:38 INFO: Generating Wazuh indexer certificates.
+06/11/2026 07:27:38 INFO: Wazuh indexer certificates created.
+06/11/2026 07:27:38 INFO: Generating Filebeat certificates.
+06/11/2026 07:27:38 INFO: Wazuh Filebeat certificates created.
+06/11/2026 07:27:38 INFO: Generating Wazuh dashboard certificates.
+06/11/2026 07:27:38 INFO: Wazuh dashboard certificates created.
+Moving created certificates to the destination directory
+Changing certificate permissions
+Setting UID indexer and dashboard
+Setting UID for wazuh manager and worker
