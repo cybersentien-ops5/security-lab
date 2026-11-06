@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: write
+  pages: read
 
 concurrency:
   group: pages
@@ -36,3 +37,16 @@ jobs:
           git add -A
           git commit -q -m "Publish page from ${{ github.sha }} [skip ci]"
           git push -q -f "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" gh-pages
+      - name: Confirm the page is online
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "Pages settings (from the API):"
+          gh api "repos/${{ github.repository }}/pages" --jq '{status, html_url, source}' || echo "Pages is NOT enabled for this repository"
+          URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
+          for i in $(seq 1 20); do
+            code=$(curl -s -o /tmp/p.html -w '%{http_code}' "$URL"); echo "try $i: $URL -> HTTP $code"
+            if [ "$code" = 200 ] && grep -q "Security Lab" /tmp/p.html; then echo "PAGE ONLINE: $URL"; exit 0; fi
+            sleep 15
+          done
+          echo "PAGE NOT ONLINE: $URL"; exit 1
