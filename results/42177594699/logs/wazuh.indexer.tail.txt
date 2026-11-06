@@ -1,0 +1,60 @@
+wazuh.indexer-1  | [2026-11-06T06:57:53,878][INFO ][o.o.a.u.d.DestinationMigrationCoordinator] [wazuh.indexer] Detected cluster change event for destination migration
+wazuh.indexer-1  | [2026-11-06T06:57:53,915][INFO ][o.o.a.u.d.DestinationMigrationCoordinator] [wazuh.indexer] Detected cluster change event for destination migration
+wazuh.indexer-1  | [2026-11-06T06:57:53,955][INFO ][o.o.a.u.d.DestinationMigrationCoordinator] [wazuh.indexer] Detected cluster change event for destination migration
+wazuh.indexer-1  | [2026-11-06T06:57:53,962][INFO ][o.o.c.r.a.AllocationService] [wazuh.indexer] Cluster health status changed from [YELLOW] to [GREEN] (reason: [shards started [[wazuh-alerts-4.x-2026.11.06][2], [wazuh-alerts-4.x-2026.11.06][1]]]).
+wazuh.indexer-1  | [2026-11-06T06:57:53,991][INFO ][o.o.a.u.d.DestinationMigrationCoordinator] [wazuh.indexer] Detected cluster change event for destination migration
+wazuh.indexer-1  | [2026-11-06T06:57:54,048][INFO ][o.o.a.u.d.DestinationMigrationCoordinator] [wazuh.indexer] Detected cluster change event for destination migration
+wazuh.indexer-1  | [2026-11-06T06:57:54,079][INFO ][o.o.p.PluginsService     ] [wazuh.indexer] PluginService:onIndexModule index:[wazuh-alerts-4.x-2026.11.06/-g85ZsGjS_iEaSn5KGsOtg]
+wazuh.indexer-1  | [2026-11-06T06:57:54,164][INFO ][o.o.c.m.MetadataMappingService] [wazuh.indexer] [wazuh-alerts-4.x-2026.11.06/-g85ZsGjS_iEaSn5KGsOtg] update_mapping [_doc]
+wazuh.indexer-1  | [2026-11-06T06:57:54,275][INFO ][o.o.a.u.d.DestinationMigrationCoordinator] [wazuh.indexer] Detected cluster change event for destination migration
+wazuh.indexer-1  | [2026-11-06T06:57:54,278][INFO ][o.o.p.PluginsService     ] [wazuh.indexer] PluginService:onIndexModule index:[wazuh-alerts-4.x-2026.11.06/-g85ZsGjS_iEaSn5KGsOtg]
+wazuh.indexer-1  | [2026-11-06T06:57:54,343][INFO ][o.o.c.m.MetadataMappingService] [wazuh.indexer] [wazuh-alerts-4.x-2026.11.06/-g85ZsGjS_iEaSn5KGsOtg] update_mapping [_doc]
+wazuh.indexer-1  | [2026-11-06T06:57:54,471][INFO ][o.o.a.u.d.DestinationMigrationCoordinator] [wazuh.indexer] Detected cluster change event for destination migration
+wazuh.indexer-1  | [2026-11-06T06:57:54,476][INFO ][o.o.p.PluginsService     ] [wazuh.indexer] PluginService:onIndexModule index:[wazuh-alerts-4.x-2026.11.06/-g85ZsGjS_iEaSn5KGsOtg]
+wazuh.indexer-1  | [2026-11-06T06:57:54,636][INFO ][o.o.p.PluginsService     ] [wazuh.indexer] PluginService:onIndexModule index:[wazuh-alerts-4.x-2026.11.06/-g85ZsGjS_iEaSn5KGsOtg]
+wazuh.indexer-1  | [2026-11-06T06:57:54,690][INFO ][o.o.c.m.MetadataMappingService] [wazuh.indexer] [wazuh-alerts-4.x-2026.11.06/-g85ZsGjS_iEaSn5KGsOtg] update_mapping [_doc]
+wazuh.indexer-1  | [2026-11-06T06:57:54,747][INFO ][o.o.a.u.d.DestinationMigrationCoordinator] [wazuh.indexer] Detected cluster change event for destination migration
+wazuh.indexer-1  | [2026-11-06T06:57:54,756][INFO ][o.o.p.PluginsService     ] [wazuh.indexer] PluginService:onIndexModule index:[wazuh-alerts-4.x-2026.11.06/-g85ZsGjS_iEaSn5KGsOtg]
+wazuh.indexer-1  | [2026-11-06T06:57:54,824][INFO ][o.o.c.m.MetadataMappingService] [wazuh.indexer] [wazuh-alerts-4.x-2026.11.06/-g85ZsGjS_iEaSn5KGsOtg] update_mapping [_doc]
+wazuh.indexer-1  | [2026-11-06T06:57:54,928][INFO ][o.o.a.u.d.DestinationMigrationCoordinator] [wazuh.indexer] Detected cluster change event for destination migration
+wazuh.indexer-1  | [2026-11-06T06:57:54,961][INFO ][o.o.p.PluginsService     ] [wazuh.indexer] PluginService:onIndexModule index:[wazuh-alerts-4.x-2026.11.06/-g85ZsGjS_iEaSn5KGsOtg]
+wazuh.indexer-1  | [2026-11-06T06:57:55,350][INFO ][o.o.p.PluginsService     ] [wazuh.indexer] PluginService:onIndexModule index:[wazuh-alerts-4.x-2026.11.06/-g85ZsGjS_iEaSn5KGsOtg]
+wazuh.indexer-1  | [2026-11-06T06:57:55,376][INFO ][o.o.c.m.MetadataMappingService] [wazuh.indexer] [wazuh-alerts-4.x-2026.11.06/-g85ZsGjS_iEaSn5KGsOtg] update_mapping [_doc]
+wazuh.indexer-1  | [2026-11-06T06:57:55,632][INFO ][o.o.a.u.d.DestinationMigrationCoordinator] [wazuh.indexer] Detected cluster change event for destination migration
+wazuh.indexer-1  | [2026-11-06T06:57:55,648][INFO ][o.o.p.PluginsService     ] [wazuh.indexer] PluginService:onIndexModule index:[wazuh-alerts-4.x-2026.11.06/-g85ZsGjS_iEaSn5KGsOtg]
+wazuh.indexer-1  | [2026-11-06T06:57:55,767][INFO ][o.o.p.PluginsService     ] [wazuh.indexer] PluginService:onIndexModule index:[aWiCdX-aTFeo20Puh9FU7g/GacaY3u1RvGnD2qsH6U5tg]
+wazuh.indexer-1  | [2026-11-06T06:57:55,771][INFO ][o.o.c.m.MetadataIndexTemplateService] [wazuh.indexer] adding template [wazuh-agent] for index patterns [wazuh-monitoring-*]
+wazuh.indexer-1  | [2026-11-06T06:57:55,830][INFO ][o.o.a.u.d.DestinationMigrationCoordinator] [wazuh.indexer] Detected cluster change event for destination migration
+wazuh.indexer-1  | [2026-11-06T06:57:55,835][INFO ][o.o.p.PluginsService     ] [wazuh.indexer] PluginService:onIndexModule index:[KJl9j8viRTiWLpWAP2dl3w/13tV_G0ZRbGeO2ZzU6uzZQ]
+wazuh.indexer-1  | [2026-11-06T06:57:55,848][INFO ][o.o.c.m.MetadataIndexTemplateService] [wazuh.indexer] adding template [wazuh-statistics] for index patterns [wazuh-statistics-*]
+wazuh.indexer-1  | [2026-11-06T06:57:55,893][INFO ][o.o.a.u.d.DestinationMigrationCoordinator] [wazuh.indexer] Detected cluster change event for destination migration
+wazuh.indexer-1  | [2026-11-06T06:57:56,461][INFO ][o.o.p.PluginsService     ] [wazuh.indexer] PluginService:onIndexModule index:[wazuh-monitoring-2026.45w/e43Ye1IKRwaQZabjF0exzg]
+wazuh.indexer-1  | [2026-11-06T06:57:56,465][INFO ][o.o.c.m.MetadataCreateIndexService] [wazuh.indexer] [wazuh-monitoring-2026.45w] creating index, cause [api], templates [wazuh-agent], shards [1]/[0]
+wazuh.indexer-1  | [2026-11-06T06:57:56,482][INFO ][o.o.p.PluginsService     ] [wazuh.indexer] PluginService:onIndexModule index:[wazuh-monitoring-2026.45w/e43Ye1IKRwaQZabjF0exzg]
+wazuh.indexer-1  | [2026-11-06T06:57:56,495][INFO ][o.o.a.u.d.DestinationMigrationCoordinator] [wazuh.indexer] Detected cluster change event for destination migration
+wazuh.indexer-1  | [2026-11-06T06:57:56,516][INFO ][o.o.c.r.a.AllocationService] [wazuh.indexer] Cluster health status changed from [YELLOW] to [GREEN] (reason: [shards started [[wazuh-monitoring-2026.45w][0]]]).
+wazuh.indexer-1  | [2026-11-06T06:57:56,531][INFO ][o.o.a.u.d.DestinationMigrationCoordinator] [wazuh.indexer] Detected cluster change event for destination migration
+wazuh.indexer-1  | [2026-11-06T06:57:56,547][INFO ][o.o.c.m.MetadataUpdateSettingsService] [wazuh.indexer] updating number_of_replicas to [0] for indices [wazuh-monitoring-2026.45w]
+wazuh.indexer-1  | [2026-11-06T06:57:57,864][INFO ][o.o.m.a.MLModelAutoReDeployer] [wazuh.indexer] Index not found, not performing auto reloading!
+wazuh.indexer-1  | [2026-11-06T06:57:57,864][INFO ][o.o.m.c.MLCommonsClusterManagerEventListener] [wazuh.indexer] Starting ML sync up job...
+wazuh.indexer-1  | [2026-11-06T06:58:05,742][INFO ][o.o.p.PluginsService     ] [wazuh.indexer] PluginService:onIndexModule index:[wazuh-alerts-4.x-2026.11.06/-g85ZsGjS_iEaSn5KGsOtg]
+wazuh.indexer-1  | [2026-11-06T06:58:05,768][INFO ][o.o.c.m.MetadataMappingService] [wazuh.indexer] [wazuh-alerts-4.x-2026.11.06/-g85ZsGjS_iEaSn5KGsOtg] update_mapping [_doc]
+wazuh.indexer-1  | [2026-11-06T06:58:05,817][INFO ][o.o.a.u.d.DestinationMigrationCoordinator] [wazuh.indexer] Detected cluster change event for destination migration
+wazuh.indexer-1  | [2026-11-06T06:58:05,822][INFO ][o.o.p.PluginsService     ] [wazuh.indexer] PluginService:onIndexModule index:[wazuh-alerts-4.x-2026.11.06/-g85ZsGjS_iEaSn5KGsOtg]
+wazuh.indexer-1  | [2026-11-06T06:58:05,867][INFO ][o.o.p.PluginsService     ] [wazuh.indexer] PluginService:onIndexModule index:[wazuh-alerts-4.x-2026.11.06/-g85ZsGjS_iEaSn5KGsOtg]
+wazuh.indexer-1  | [2026-11-06T06:58:05,916][INFO ][o.o.c.m.MetadataMappingService] [wazuh.indexer] [wazuh-alerts-4.x-2026.11.06/-g85ZsGjS_iEaSn5KGsOtg] update_mapping [_doc]
+wazuh.indexer-1  | [2026-11-06T06:58:05,957][INFO ][o.o.a.u.d.DestinationMigrationCoordinator] [wazuh.indexer] Detected cluster change event for destination migration
+wazuh.indexer-1  | [2026-11-06T06:58:05,963][INFO ][o.o.p.PluginsService     ] [wazuh.indexer] PluginService:onIndexModule index:[wazuh-alerts-4.x-2026.11.06/-g85ZsGjS_iEaSn5KGsOtg]
+wazuh.indexer-1  | [2026-11-06T06:58:05,994][INFO ][o.o.c.m.MetadataMappingService] [wazuh.indexer] [wazuh-alerts-4.x-2026.11.06/-g85ZsGjS_iEaSn5KGsOtg] update_mapping [_doc]
+wazuh.indexer-1  | [2026-11-06T06:58:06,055][INFO ][o.o.a.u.d.DestinationMigrationCoordinator] [wazuh.indexer] Detected cluster change event for destination migration
+wazuh.indexer-1  | [2026-11-06T06:58:06,058][INFO ][o.o.p.PluginsService     ] [wazuh.indexer] PluginService:onIndexModule index:[wazuh-alerts-4.x-2026.11.06/-g85ZsGjS_iEaSn5KGsOtg]
+wazuh.indexer-1  | [2026-11-06T06:58:06,099][INFO ][o.o.p.PluginsService     ] [wazuh.indexer] PluginService:onIndexModule index:[wazuh-alerts-4.x-2026.11.06/-g85ZsGjS_iEaSn5KGsOtg]
+wazuh.indexer-1  | [2026-11-06T06:58:07,871][INFO ][o.o.p.PluginsService     ] [wazuh.indexer] PluginService:onIndexModule index:[.plugins-ml-config/36GakvGaTn-ht7b-trEsDw]
+wazuh.indexer-1  | [2026-11-06T06:58:07,875][INFO ][o.o.c.m.MetadataCreateIndexService] [wazuh.indexer] [.plugins-ml-config] creating index, cause [api], templates [], shards [1]/[1]
+wazuh.indexer-1  | [2026-11-06T06:58:07,876][INFO ][o.o.c.r.a.AllocationService] [wazuh.indexer] updating number_of_replicas to [0] for indices [.plugins-ml-config]
+wazuh.indexer-1  | [2026-11-06T06:58:08,090][INFO ][o.o.p.PluginsService     ] [wazuh.indexer] PluginService:onIndexModule index:[.plugins-ml-config/36GakvGaTn-ht7b-trEsDw]
+wazuh.indexer-1  | [2026-11-06T06:58:08,340][INFO ][o.o.a.u.d.DestinationMigrationCoordinator] [wazuh.indexer] Detected cluster change event for destination migration
+wazuh.indexer-1  | [2026-11-06T06:58:08,450][INFO ][o.o.c.r.a.AllocationService] [wazuh.indexer] Cluster health status changed from [YELLOW] to [GREEN] (reason: [shards started [[.plugins-ml-config][0]]]).
+wazuh.indexer-1  | [2026-11-06T06:58:08,462][INFO ][o.o.a.u.d.DestinationMigrationCoordinator] [wazuh.indexer] Detected cluster change event for destination migration
+wazuh.indexer-1  | [2026-11-06T06:58:08,463][INFO ][o.o.m.e.i.MLIndicesHandler] [wazuh.indexer] create index:.plugins-ml-config
+wazuh.indexer-1  | [2026-11-06T06:58:08,484][INFO ][o.o.m.c.MLSyncUpCron     ] [wazuh.indexer] ML configuration initialized successfully

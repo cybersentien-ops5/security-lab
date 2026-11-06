@@ -1,0 +1,5 @@
+suricata-1  | Checking for capability sys_nice: yes
+suricata-1  | Checking for capability net_admin: yes
+suricata-1  | i: suricata: This is Suricata version 7.0.17 RELEASE running in SYSTEM mode
+suricata-1  | W: af-packet: eth0: AF_PACKET tpacket-v3 is recommended for non-inline operation
+suricata-1  | i: threads: Threads created -> W: 4 FM: 1 FR: 1   Engine started.
