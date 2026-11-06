@@ -29,8 +29,8 @@ jobs:
 
       - name: Free disk space
         run: |
-          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL || true
-          docker system prune -af >/dev/null || true
+          # removes large preinstalled toolchains the lab does not use (background-safe, quick)
+          sudo rm -rf /usr/share/dotnet /opt/ghc /opt/hostedtoolcache/CodeQL || true
           mkdir -p "$OUT_DIR/logs"
           df -h / | tail -1 | tee "$OUT_DIR/logs/disk.txt"
 
@@ -41,7 +41,6 @@ jobs:
         run: |
           . demo/lib.sh
           lab_certs
-          sudo chmod -R a+r lab/wazuh/certs
           ls lab/wazuh/certs | tee "$OUT_DIR/logs/certs.txt"
 
       - name: Start the lab

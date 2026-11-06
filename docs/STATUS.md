@@ -11,9 +11,13 @@ Repo: https://github.com/cybersentien-ops5/security-lab  ·  Results of every CI
 - First lab-lite run on GitHub; read results branch; fix failures (max 3 attempts each).
 - Laptop kit (.command files, demo/README.md), README with proof, docs/ROADMAP.md.
 
+- Local sandbox dry run (not a GitHub run, own openssl certs because the sandbox cannot reach packages.wazuh.com): all 6 checks PASS, 12/12 attacks blocked, 12 WAF + 12 Suricata alerts in Wazuh, ~9 s to alert, 3 screenshots captured. Fixed two bugs it found (Juice Shop healthcheck node path; Suricata rules mount).
+- Laptop kit written: demo/*.command, demo/README.md. README.md and docs/ROADMAP.md drafted.
+
 ## NOT VERIFIED
-- Everything: no lab-lite run has completed yet.
+- No green GitHub run yet. The laptop (.command) files have not been run on a Mac.
 
 ## Runs
 | Run id | Result | Notes |
 |---|---|---|
+| 42176547097 | FAIL | certificate step: generator output hidden; likely root-owned cert folder unreadable by runner user. Fixed in lib.sh (attempt 1). |

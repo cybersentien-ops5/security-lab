@@ -1,6 +1,6 @@
 """Playwright screenshots for the scorecard: Wazuh overview, one alert detail, one blocked request.
 Writes PNGs and screenshots.json (what each shot shows and whether it was captured) to argv[1]."""
-import json, sys, time, urllib.parse, pathlib
+import json, os, sys, time, urllib.parse, pathlib
 from playwright.sync_api import sync_playwright
 
 out = pathlib.Path(sys.argv[1]); shots = out / "screenshots"; shots.mkdir(parents=True, exist_ok=True)
@@ -12,7 +12,7 @@ def note(name, ok, detail):
     print(f"{name}: {'captured' if ok else 'NOT captured'} - {detail}")
 
 with sync_playwright() as p:
-    b = p.chromium.launch()
+    b = p.chromium.launch(executable_path=os.environ.get("CHROMIUM_PATH") or None)
     ctx = b.new_context(ignore_https_errors=True, viewport={"width": 1440, "height": 900})
     pg = ctx.new_page()
 
@@ -55,7 +55,7 @@ with sync_playwright() as p:
     if logged_in:
         try:
             q = urllib.parse.quote("rule.id:100101")
-            url = (DASH + "/app/data-explorer/discover#?_a=(discover:(columns:!(_source),isDirty:!f,sort:!()),"
+            url = (DASH + "/app/data-explorer/discover#?_a=(discover:(columns:!(rule.description,rule.level),isDirty:!f,sort:!()),"
                    "metadata:(indexPattern:'wazuh-alerts-*',view:discover))&_g=(time:(from:now-1h,to:now))"
                    f"&_q=(filters:!(),query:(language:kuery,query:'{q}'))")
             pg.goto(url, timeout=60000)

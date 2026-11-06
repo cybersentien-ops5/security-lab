@@ -16,10 +16,16 @@ API_URL="https://127.0.0.1:55000"
 dc() { docker compose -f "$COMPOSE_FILE" "$@"; }
 
 lab_certs() {
-  if [ -f "$LAB_ROOT/lab/wazuh/certs/root-ca.pem" ]; then return 0; fi
-  echo "Creating the lab's certificates (first run only)..."
-  dc --profile setup run --rm certs >/dev/null
-  [ -f "$LAB_ROOT/lab/wazuh/certs/root-ca.pem" ]
+  local d="$LAB_ROOT/lab/wazuh/certs"
+  if [ -r "$d/root-ca.pem" ] && [ -r "$d/wazuh.dashboard.pem" ]; then return 0; fi
+  echo "Creating the lab's certificates with Wazuh's own generator (first run only)..."
+  dc --profile setup run --rm certs > "$OUT_DIR/certs_generator.txt" 2>&1
+  local rc=$?
+  tail -n 5 "$OUT_DIR/certs_generator.txt"
+  # On Linux the generator writes root-owned files; make them readable by the lab containers.
+  if [ ! -r "$d/root-ca.pem" ] && sudo -n true 2>/dev/null; then sudo chown -R "$(id -u):$(id -g)" "$d"; fi
+  chmod -R a+rX "$d" 2>/dev/null || true
+  [ "$rc" -eq 0 ] && [ -r "$d/root-ca.pem" ] && [ -r "$d/wazuh.dashboard.pem" ]
 }
 
 lab_up() { lab_certs && dc up -d; }
