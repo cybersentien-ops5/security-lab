@@ -1,0 +1,7 @@
+part	result	value	reason
+containers_running	PASS	6	all 6 lab containers are running
+waf_allows_normal_traffic	PASS	200	a normal product search returned HTTP 200
+waf_blocks_attacks	PASS	12/12	the WAF returned 403 for all 12 attacks
+wazuh_has_waf_alert	PASS	12	Wazuh holds 12 WAF block alerts (rule 100101)
+wazuh_has_ids_alert	FAIL	0	no Suricata alert in Wazuh after 240s (count: 0)
+dashboard_loads	PASS	200	the Wazuh dashboard login page returned HTTP 200

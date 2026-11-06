@@ -1,0 +1,3 @@
+  [   0s] waf=200 indexer=000 wazuh-api=000 dashboard=000
+  [  11s] waf=200 indexer=503 wazuh-api=200 dashboard=503
+  [  23s] waf=200 indexer=200 wazuh-api=200 dashboard=200

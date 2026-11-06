@@ -1,0 +1,12 @@
+admin-key.pem
+admin.pem
+root-ca-manager.key
+root-ca-manager.pem
+root-ca.key
+root-ca.pem
+wazuh.dashboard-key.pem
+wazuh.dashboard.pem
+wazuh.indexer-key.pem
+wazuh.indexer.pem
+wazuh.manager-key.pem
+wazuh.manager.pem

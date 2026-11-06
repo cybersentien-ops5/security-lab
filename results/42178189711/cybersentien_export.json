@@ -1,0 +1,38 @@
+[
+  {
+    "topic": "lab_containers_running",
+    "state": "met",
+    "detail": "All 6 lab containers are running (run 42178189711).",
+    "identity": "containers juiceshop=e43865cbe523, log-init=e2e75e7bab3c, suricata=1333a6f21db5, waf=acbb6b2b2ce9, wazuh.dashboard=cfb4077e8abc, wazuh.indexer=f5668da71bbc, wazuh.manager=1091720a8da3"
+  },
+  {
+    "topic": "waf_allows_legitimate_traffic",
+    "state": "met",
+    "detail": "A normal product search returned HTTP 200 (run 42178189711).",
+    "identity": "container waf=acbb6b2b2ce9"
+  },
+  {
+    "topic": "waf_blocks_web_attacks",
+    "state": "met",
+    "detail": "The WAF returned 403 for all 12 attacks (run 42178189711).",
+    "identity": "OWASP CRS rules 920350, 920440, 930130, 941100, 941110, 941120, 941160, 941170, 941210, 941390, 942100, 942190, 942270, 942360"
+  },
+  {
+    "topic": "siem_receives_waf_alerts",
+    "state": "met",
+    "detail": "Wazuh holds 12 WAF block alerts (rule 100101) (run 42178189711).",
+    "identity": "Wazuh rule 100101, alert jwCsr6EBswrpeBSuNQqU"
+  },
+  {
+    "topic": "ids_detects_attacks_in_siem",
+    "state": "gap",
+    "detail": "No Suricata alert in Wazuh after 240s (count: 0) (run 42178189711).",
+    "identity": "Suricata (no alert found)"
+  },
+  {
+    "topic": "siem_dashboard_available",
+    "state": "met",
+    "detail": "The Wazuh dashboard login page returned HTTP 200 (run 42178189711).",
+    "identity": "container wazuh.dashboard=cfb4077e8abc"
+  }
+]
