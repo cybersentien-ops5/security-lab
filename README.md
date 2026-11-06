@@ -35,7 +35,28 @@ flowchart LR
 <!-- SCORECARD:START -->
 ## Latest results
 
-No completed test run yet. This section is updated from the newest green run on GitHub.
+From GitHub run [42179344856](https://github.com/cybersentien-ops5/security-lab/actions/runs/42179344856) (all checks passed). Full scorecard: [docs/proof/scorecard.md](docs/proof/scorecard.md) · [raw results for this run](../../tree/results/results/42179344856)
+
+| Measure | Result |
+|---|---|
+| Attacks sent | 12 |
+| Blocked by the web application firewall | 12 of 12 |
+| Firewall alerts in the SIEM (Wazuh) | 12 |
+| Suricata alerts in the SIEM (Wazuh) | 12 |
+| Seconds from first attack to alert in the SIEM | firewall 6 s · Suricata 6 s |
+
+**One alert in detail (WAF block, rule 100101)**
+
+![One alert in detail (WAF block, rule 100101)](docs/proof/screenshots/alert_detail.png)
+
+**A blocked request (the firewall's HTTP 403)**
+
+![A blocked request (the firewall's HTTP 403)](docs/proof/screenshots/blocked_request.png)
+
+**Wazuh overview**
+
+![Wazuh overview](docs/proof/screenshots/wazuh_overview.png)
+
 <!-- SCORECARD:END -->
 
 ## Run it on a Mac
