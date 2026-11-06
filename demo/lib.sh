@@ -36,16 +36,17 @@ http_code() { local u="$1"; shift; curl -sk -o /dev/null -m 10 -w '%{http_code}'
 
 # Waits until every part answers. $1 = timeout seconds (default 600)
 lab_wait() {
-  local limit="${1:-600}" start now c1 c2 c3 c4
+  local limit="${1:-600}" start now c1 c2 c3 c4 c5
   start=$(date +%s)
   while :; do
     c1=$(http_code "$WAF_URL/")
     c2=$(http_code "$INDEXER_URL/_cluster/health" -u "$WAZUH_USER:$WAZUH_PASS")
     c3=$(http_code "$API_URL/security/user/authenticate" -u "$API_USER:$API_PASS" -X POST)
     c4=$(http_code "$DASH_URL/app/login")
+    if dc logs suricata 2>/dev/null | grep -q "Engine started"; then c5=yes; else c5=no; fi
     now=$(date +%s)
-    printf '  [%4ss] waf=%s indexer=%s wazuh-api=%s dashboard=%s\n' "$((now-start))" "$c1" "$c2" "$c3" "$c4"
-    if [ "$c1" = 200 ] && [ "$c2" = 200 ] && [ "$c3" = 200 ] && [ "$c4" = 200 ]; then return 0; fi
+    printf '  [%4ss] waf=%s indexer=%s wazuh-api=%s dashboard=%s suricata=%s\n' "$((now-start))" "$c1" "$c2" "$c3" "$c4" "$c5"
+    if [ "$c1" = 200 ] && [ "$c2" = 200 ] && [ "$c3" = 200 ] && [ "$c4" = 200 ] && [ "$c5" = yes ]; then return 0; fi
     if [ $((now-start)) -ge "$limit" ]; then return 1; fi
     sleep 10
   done

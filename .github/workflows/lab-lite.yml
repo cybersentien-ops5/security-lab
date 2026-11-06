@@ -74,11 +74,13 @@ jobs:
         continue-on-error: true
         run: |
           set -o pipefail
-          {
-            python3 -m venv /tmp/pw && /tmp/pw/bin/pip install -q playwright==1.56.0 \
-              && /tmp/pw/bin/python -m playwright install --with-deps chromium >/dev/null \
-              && /tmp/pw/bin/python scripts/screenshots.py "$OUT_DIR"
-          } 2>&1 | tail -n 20 | tee "$OUT_DIR/logs/screenshots.txt"
+          # Playwright's own pinned image carries the browser and its system libraries,
+          # so this works whatever Ubuntu version the runner has.
+          mkdir -p "$OUT_DIR/screenshots"; chmod 777 "$OUT_DIR" "$OUT_DIR/screenshots"
+          docker run --rm --network host --ipc host -v "$PWD":/w:ro -v "$OUT_DIR":/out -w /w \
+            mcr.microsoft.com/playwright/python:v1.56.0-noble \
+            sh -c "pip install -q --break-system-packages playwright==1.56.0 && python scripts/screenshots.py /out" \
+            2>&1 | tail -n 20 | tee "$OUT_DIR/logs/screenshots.txt"
 
       - name: Collect log tails
         if: always()

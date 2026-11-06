@@ -84,7 +84,7 @@ services:
     image: jasonish/suricata:7.0.17
     network_mode: "service:waf"
     cap_add: [NET_ADMIN, NET_RAW, SYS_NICE]
-    command: ["-i", "eth0", "-k", "none", "-S", "/lab/rules/lab.rules"]
+    command: ["--pcap=eth0", "-k", "none", "-S", "/lab/rules/lab.rules"]
     volumes:
       - ./suricata/lab.rules:/lab/rules/lab.rules:ro
       - suricata-logs:/var/log/suricata
