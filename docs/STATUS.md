@@ -20,5 +20,6 @@ Repo: https://github.com/cybersentien-ops5/security-lab  ·  Results of every CI
 ## Runs
 | Run id | Result | Notes |
 |---|---|---|
+| 42177861433 | checks PASS, screenshots FAIL | 12/12 blocked, 7 s / 10 s to alert. Playwright 1.48 could not build on the runner's Python 3.14; moved to 1.56.0 (screenshot attempt 2). |
 | 42177594699 | checks PASS, screenshots FAIL | 12/12 blocked, 12 WAF + 12 Suricata alerts, 7 s to alert. Screenshot step: pip refused (system Python); fixed with a venv (screenshot attempt 1). |
 | 42176547097 | FAIL | certificate step: generator output hidden; likely root-owned cert folder unreadable by runner user. Fixed in lib.sh (attempt 1). |

@@ -73,8 +73,9 @@ jobs:
         id: shots
         continue-on-error: true
         run: |
+          set -o pipefail
           {
-            python3 -m venv /tmp/pw && /tmp/pw/bin/pip install -q playwright==1.48.0 \
+            python3 -m venv /tmp/pw && /tmp/pw/bin/pip install -q playwright==1.56.0 \
               && /tmp/pw/bin/python -m playwright install --with-deps chromium >/dev/null \
               && /tmp/pw/bin/python scripts/screenshots.py "$OUT_DIR"
           } 2>&1 | tail -n 20 | tee "$OUT_DIR/logs/screenshots.txt"
