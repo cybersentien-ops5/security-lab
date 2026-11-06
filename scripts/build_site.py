@@ -24,9 +24,9 @@ checks = "".join(
     f'<div><strong>{e(names.get(c["part"], c["part"]))}</strong><br><span class="muted">{e(c["reason"])}</span></div></li>'
     for c in sc["checks"])
 crs = next((r["identity"] for r in export if r["topic"] == "waf_blocks_web_attacks"), "")
-shots = [("blocked_request", "The firewall's answer to an attack", "A cross-site scripting attempt sent from a browser gets HTTP 403 Forbidden from the web application firewall."),
-         ("alert_detail", "One alert, opened in the SIEM", "Wazuh shows the firewall's block as an alert (rule 100101, level 10) with the source, the request and the MITRE ATT&CK technique T1190."),
-         ("wazuh_overview", "The SIEM overview", "Wazuh's dashboard home after the attack, with the alert counts by severity.")]
+shots = [("blocked_request", "The guard says no", "This is what an attacker sees: the request is refused (\"403 Forbidden\") and never reaches the shop."),
+         ("alert_detail", "One alarm, opened in the control room", "The control room shows exactly what was blocked, when, and where it came from."),
+         ("wazuh_overview", "The control room's front page", "A summary of all the alarms, sorted by how serious they are.")]
 topic_names = {"lab_containers_running": "Lab services running", "waf_allows_legitimate_traffic": "Legitimate traffic allowed",
                "waf_blocks_web_attacks": "Web attacks blocked", "siem_receives_waf_alerts": "Firewall alerts reach the SIEM",
                "ids_detects_attacks_in_siem": "Intrusion detection alerts reach the SIEM", "siem_dashboard_available": "SIEM dashboard available",
@@ -38,7 +38,7 @@ evidence = "".join(
     f'<td>{e(r["detail"])}<br><span class="muted small">{e(r["identity"][:140])}</span></td></tr>'
     for r in export)
 gallery = "".join(
-    f'<figure><a href="img/{k}.png"><img src="img/{k}.png" alt="{e(t)}" loading="lazy"></a>'
+    f'<figure><a href="img/{k}.png"><img src="img/{k}.png" alt="{e(t)}" loading="lazy"{' style="height:150px;object-fit:cover;object-position:top"' if k == 'blocked_request' else ''}></a>'
     f'<figcaption><strong>{e(t)}</strong><br>{e(d)}</figcaption></figure>'
     for k, t, d in shots if (out / "img" / f"{k}.png").exists())
 
@@ -66,7 +66,8 @@ table.ev{{width:100%;border-collapse:collapse;font-size:14px}} table.ev td{{bord
 .flow{{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 16px}} .flow span{{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:14px}} .flow b{{color:var(--muted)}}
 .tablewrap{{overflow-x:auto}}
 .muted{{color:var(--muted)}} .small{{font-size:14px}}
-figure{{margin:0;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}} figure img{{display:block;width:100%;height:auto;border-bottom:1px solid var(--line)}} figcaption{{padding:12px 14px;font-size:14px;color:var(--muted)}} figcaption strong{{color:var(--ink)}}
+figure{{margin:0;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}} details summary{{cursor:pointer}} details[open] summary{{margin-bottom:6px}}
+figure img{{display:block;width:100%;height:auto;border-bottom:1px solid var(--line)}} figcaption{{padding:12px 14px;font-size:14px;color:var(--muted)}} figcaption strong{{color:var(--ink)}}
 .gallery{{display:grid;grid-template-columns:1fr;gap:18px;max-width:980px}}
 svg text{{fill:var(--ink);font:13px system-ui,sans-serif}} svg .sub{{fill:var(--muted);font-size:11px}} svg .box{{fill:var(--card);stroke-width:2}} svg .zone{{fill:none;stroke:var(--line);stroke-dasharray:5 4}} svg .zl{{fill:var(--muted);font-size:11px;letter-spacing:.06em}} svg .arrow{{stroke:var(--muted);stroke-width:1.6;fill:none;marker-end:url(#ah)}}
 .diagram{{overflow-x:auto}} ol.steps{{margin:0;padding-left:20px}} ol.steps li{{margin:6px 0}} code{{background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:14px}}
@@ -74,27 +75,38 @@ footer{{padding:30px 0 50px;color:var(--muted);font-size:14px}}
 </style></head><body>
 <div class="wrap">
 <header>
-  <h1>Security Lab: catching a web attack three ways</h1>
-  <p class="lead">A web application firewall, intrusion detection and a SIEM working together on a deliberately vulnerable web shop. A scripted attack is sent, the firewall blocks it, and the SIEM shows the firewall and Suricata alerts within seconds.</p>
+  <h1>A security lab that catches a cyber attack in {sc['seconds_to_waf_alert']} seconds</h1>
+  <p class="lead">I built a small practice online shop and protected it the way a real company would: a guard at the door, a watcher on the network, and a control room that collects every alarm. Then I attacked it. Every attack was stopped, and the control room raised the alarm within seconds.</p>
   <div class="by">Aneis Samaan · <a href="https://cybersentien.com">CyberSentien</a></div>
 </header>
 
 <section class="tiles" aria-label="Latest results">
-  <div class="tile"><div class="n">{sc['attacks_blocked']}/{sc['attacks_sent']}</div><div class="l">attacks blocked by the firewall</div></div>
-  <div class="tile"><div class="n">{sc['waf_alerts_in_wazuh']}</div><div class="l">firewall alerts in the SIEM</div></div>
-  <div class="tile"><div class="n">{sc['suricata_alerts_in_wazuh']}</div><div class="l">intrusion detection alerts in the SIEM</div></div>
-  <div class="tile"><div class="n">{sc['seconds_to_waf_alert']} s</div><div class="l">from first attack to alert in the SIEM</div></div>
+  <div class="tile"><div class="n">{sc['attacks_blocked']}/{sc['attacks_sent']}</div><div class="l">attacks stopped at the door</div></div>
+  <div class="tile"><div class="n">{sc['waf_alerts_in_wazuh']}</div><div class="l">alarms from the guard</div></div>
+  <div class="tile"><div class="n">{sc['suricata_alerts_in_wazuh']}</div><div class="l">alarms from the watcher</div></div>
+  <div class="tile"><div class="n">{sc['seconds_to_waf_alert']} s</div><div class="l">until the control room knew</div></div>
 </section>
-<p class="small muted">Measured by automated test run <a href="{e(run_url)}">{e(rid)}</a> on GitHub. All data is synthetic and the attacks only target the lab's own containers.</p>
+<p class="small muted">These numbers come from an automatic test that ran on GitHub (<a href="{e(run_url)}">test {e(rid)}</a>). Everything is practice data, and the attacks only hit the lab itself.</p>
 
 <section class="grid3">
-  <div class="card layer"><h3><span class="dot" style="background:var(--waf)"></span>Web application firewall</h3><p>ModSecurity with the OWASP Core Rule Set in blocking mode, in front of OWASP Juice Shop. Malicious requests get HTTP 403 before they reach the shop.</p></div>
-  <div class="card layer"><h3><span class="dot" style="background:var(--ids)"></span>Intrusion detection</h3><p>Suricata watches the same network interface as the firewall and raises its own alert for each attack pattern it recognises.</p></div>
-  <div class="card layer"><h3><span class="dot" style="background:var(--siem)"></span>SIEM</h3><p>Wazuh collects both logs, applies detection rules mapped to MITRE ATT&amp;CK, and shows the alerts on one dashboard.</p></div>
+  <div class="card layer"><h3><span class="dot" style="background:var(--waf)"></span>The guard</h3><p>Checks every visitor's request and turns away anything that looks like an attack, before it reaches the shop.</p><p class="small muted" style="margin-top:8px">Web application firewall</p></div>
+  <div class="card layer"><h3><span class="dot" style="background:var(--ids)"></span>The watcher</h3><p>Quietly watches all the traffic and raises its own alarm when it recognises an attack, as a second line of defence.</p><p class="small muted" style="margin-top:8px">Intrusion detection</p></div>
+  <div class="card layer"><h3><span class="dot" style="background:var(--siem)"></span>The control room</h3><p>Collects the alarms from the guard and the watcher in one place, so a security team sees what happened straight away.</p><p class="small muted" style="margin-top:8px">SIEM</p></div>
 </section>
 
 <section class="card">
-  <h2>How it fits together</h2>
+  <h2>What happened in the test</h2>
+  <ol class="steps">
+    <li>A script tried {sc['attacks_sent']} common attacks on the shop: tricking its database, planting harmful code, and hunting for secret files.</li>
+    <li>The guard stopped all {sc['attacks_blocked']} at the door. Normal shopping still worked.</li>
+    <li>The watcher spotted every attack too, and raised its own alarm.</li>
+    <li>Both alarms reached the control room in about {sc['seconds_to_waf_alert']} seconds, ready for a person to look at.</li>
+  </ol>
+</section>
+
+<details class="card">
+  <summary><strong>For the experts: how it is built</strong></summary>
+  <h2 style="margin-top:16px">How it fits together</h2>
   <div class="diagram">
   <svg viewBox="0 0 980 300" width="100%" style="min-width:720px" role="img" aria-label="Architecture: attacker to firewall to Juice Shop; Suricata watches the firewall; both send logs to Wazuh">
     <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" style="color:var(--muted)"/></marker></defs>
@@ -116,29 +128,32 @@ footer{{padding:30px 0 50px;color:var(--muted);font-size:14px}}
     <path class="arrow" d="M650 220 H678"/><path class="arrow" d="M805 220 H833"/>
   </svg></div>
   <p class="small muted">The zones are separate networks, so a zone firewall, single sign-on with MFA and automated response can be added later without rebuilding anything.</p>
-</section>
+</details>
 
-<section class="card">
-  <h2>What the automated test proved <span class="pass">{e(sc['overall'])}</span></h2>
+<details class="card">
+  <summary><strong>For the experts: the six automatic checks</strong> <span class="pass">{e(sc['overall'])}</span></summary>
+  <h2 style="margin-top:16px">What the automated test proved</h2>
   <ul class="checks">{checks}</ul>
   <p class="small muted" style="margin-top:14px">Firewall rules that fired: {e(crs.replace('OWASP CRS rules ', ''))}. Machine-readable results: <a href="cybersentien_export.json">cybersentien_export.json</a>.</p>
-</section>
+</details>
 
 <section class="card">
-  <h2>How the lab feeds CyberSentien</h2>
-  <p class="muted" style="margin-top:0">Every check the lab runs becomes an evidence row in the format the CyberSentien readiness engine reads: what was checked, whether it is met or a gap, the measured figure, and the exact rule, alert or container that proves it. Only measured results become rows.</p>
+  <h2>How it connects to CyberSentien</h2>
+  <p class="muted" style="margin-top:0">Each result from the lab is turned into a line of evidence that CyberSentien can read: what was checked, whether it passed, and what proves it.</p>
+  <details><summary>Show the evidence lines</summary>
   <div class="flow"><span>Simulated attack</span><b>&rarr;</b><span>Firewall, IDS and SIEM checks</span><b>&rarr;</b><span>Evidence rows (<a href="cybersentien_export.json">JSON</a>)</span><b>&rarr;</b><span>CyberSentien test tenant (next step)</span></div>
-  <div class="tablewrap"><table class="ev"><tbody>{evidence}</tbody></table></div>
-  <p class="small muted" style="margin-bottom:0">From run {e(rid)}. Importing these rows into CyberSentien's test tenant is the next step of the build and is not live yet.</p>
+  <div class="tablewrap"><table class="ev"><tbody>{evidence}</tbody></table></div></details>
+  <p class="small muted" style="margin-bottom:0">From test {e(rid)}. Sending these lines into CyberSentien automatically is the next step and is not live yet.</p>
 </section>
 
 <section>
-  <h2>Screenshots from that run</h2>
+  <h2>What it looks like</h2>
   <div class="gallery">{gallery}</div>
 </section>
 
-<section class="card">
-  <h2>Run it yourself</h2>
+<details class="card">
+  <summary><strong>For the experts: run it yourself</strong></summary>
+  <h2 style="margin-top:16px">Run it yourself</h2>
   <ol class="steps">
     <li>Install Docker Desktop and give it at least 6 GB of memory.</li>
     <li><code>git clone {REPO}.git</code></li>
@@ -146,7 +161,7 @@ footer{{padding:30px 0 50px;color:var(--muted);font-size:14px}}
     <li><code>check-demo.command</code> prints PASS or FAIL for each part; <code>stop-demo.command</code> frees the memory.</li>
   </ol>
   <p class="small muted">Pinned versions: Wazuh 4.9.2 · OWASP ModSecurity CRS 4.25.2 · OWASP Juice Shop 17.1.1 · Suricata 7.0.17. Source code and every test run: <a href="{REPO}">{REPO.replace('https://', '')}</a>.</p>
-</section>
+</details>
 
 <footer>Built by Aneis Samaan, <a href="https://cybersentien.com">CyberSentien</a>. Lab only: synthetic data, attacks confined to the lab's own containers.</footer>
 </div></body></html>
