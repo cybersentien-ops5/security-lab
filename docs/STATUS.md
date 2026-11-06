@@ -15,9 +15,10 @@ Repo: https://github.com/cybersentien-ops5/security-lab  ·  Results of every CI
 - Laptop kit written: demo/*.command, demo/README.md. README.md and docs/ROADMAP.md drafted.
 
 ## NOT VERIFIED
-- No green GitHub run yet. The laptop (.command) files have not been run on a Mac.
+- Screenshots on GitHub (fix pushed after run 42177594699). The laptop (.command) files have not been run on a Mac.
 
 ## Runs
 | Run id | Result | Notes |
 |---|---|---|
+| 42177594699 | checks PASS, screenshots FAIL | 12/12 blocked, 12 WAF + 12 Suricata alerts, 7 s to alert. Screenshot step: pip refused (system Python); fixed with a venv (screenshot attempt 1). |
 | 42176547097 | FAIL | certificate step: generator output hidden; likely root-owned cert folder unreadable by runner user. Fixed in lib.sh (attempt 1). |
