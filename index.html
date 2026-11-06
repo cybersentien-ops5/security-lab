@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Security Lab · Aneis Samaan</title>
+<meta name="description" content="A security lab showing a web application firewall, intrusion detection and a SIEM catching a simulated attack, with proof from an automated test run.">
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#14181f;--muted:#5b6472;--line:#e3e6eb;--accent:#1f5eff;--ok:#0f7b45;--okbg:#e5f5ec;--bad:#b42318;--badbg:#fdecea;--waf:#7a3cff;--ids:#d9480f;--siem:#1f5eff;--app:#0f7b45}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1217;--card:#171b22;--ink:#e8ebf0;--muted:#9aa3b2;--line:#2a303a;--accent:#6c95ff;--ok:#4cc38a;--okbg:#14301f;--bad:#ff8a80;--badbg:#3a1714;--waf:#a98bff;--ids:#ff9a62;--siem:#6c95ff;--app:#4cc38a}}
+:root[data-theme="dark"]{--bg:#0f1217;--card:#171b22;--ink:#e8ebf0;--muted:#9aa3b2;--line:#2a303a;--accent:#6c95ff;--ok:#4cc38a;--okbg:#14301f;--bad:#ff8a80;--badbg:#3a1714;--waf:#a98bff;--ids:#ff9a62;--siem:#6c95ff;--app:#4cc38a}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--accent)} .wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+header{padding:48px 0 24px} h1{font-size:clamp(28px,4vw,40px);line-height:1.15;margin:0 0 10px} h2{font-size:22px;margin:0 0 14px}
+.lead{font-size:18px;color:var(--muted);max-width:760px;margin:0} .by{margin-top:14px;font-weight:600}
+section{margin:28px 0} .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.layer h3{margin:0 0 6px;font-size:17px} .layer p{margin:0;color:var(--muted)} .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px} .tile .n{font-size:32px;font-weight:700;line-height:1.1} .tile .l{color:var(--muted);font-size:14px}
+.pass{display:inline-flex;align-items:center;gap:8px;background:var(--okbg);color:var(--ok);font-weight:700;border-radius:999px;padding:6px 14px}
+ul.checks{list-style:none;padding:0;margin:0;display:grid;gap:10px} ul.checks li{display:flex;gap:12px;align-items:flex-start}
+.badge{font-size:12px;font-weight:700;border-radius:6px;padding:3px 8px;flex:none;margin-top:2px} .badge.ok{background:var(--okbg);color:var(--ok)} .badge.bad{background:var(--badbg);color:var(--bad)} .badge.info{background:var(--bg);color:var(--accent);border:1px solid var(--line)}
+table.ev{width:100%;border-collapse:collapse;font-size:14px} table.ev td{border-top:1px solid var(--line);padding:10px 8px;vertical-align:top} table.ev td:first-child{width:30%} table.ev td:nth-child(2){width:90px}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 16px} .flow span{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:14px} .flow b{color:var(--muted)}
+.tablewrap{overflow-x:auto}
+.muted{color:var(--muted)} .small{font-size:14px}
+figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden} details summary{cursor:pointer} details[open] summary{margin-bottom:6px}
+figure img{display:block;width:100%;height:auto;border-bottom:1px solid var(--line)} figcaption{padding:12px 14px;font-size:14px;color:var(--muted)} figcaption strong{color:var(--ink)}
+.gallery{display:grid;grid-template-columns:1fr;gap:18px;max-width:980px}
+svg text{fill:var(--ink);font:13px system-ui,sans-serif} svg .sub{fill:var(--muted);font-size:11px} svg .box{fill:var(--card);stroke-width:2} svg .zone{fill:none;stroke:var(--line);stroke-dasharray:5 4} svg .zl{fill:var(--muted);font-size:11px;letter-spacing:.06em} svg .arrow{stroke:var(--muted);stroke-width:1.6;fill:none;marker-end:url(#ah)}
+.diagram{overflow-x:auto} ol.steps{margin:0;padding-left:20px} ol.steps li{margin:6px 0} code{background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:14px}
+footer{padding:30px 0 50px;color:var(--muted);font-size:14px}
+</style></head><body>
+<div class="wrap">
+<header>
+  <h1>A security lab that catches a cyber attack in 6 seconds</h1>
+  <p class="lead">I built a small practice online shop and protected it the way a real company would: a guard at the door, a watcher on the network, and a control room that collects every alarm. Then I attacked it. Every attack was stopped, and the control room raised the alarm within seconds.</p>
+  <div class="by">Aneis Samaan · <a href="https://cybersentien.com">CyberSentien</a></div>
+</header>
+
+<section class="tiles" aria-label="Latest results">
+  <div class="tile"><div class="n">12/12</div><div class="l">attacks stopped at the door</div></div>
+  <div class="tile"><div class="n">12</div><div class="l">alarms from the guard</div></div>
+  <div class="tile"><div class="n">12</div><div class="l">alarms from the watcher</div></div>
+  <div class="tile"><div class="n">6 s</div><div class="l">until the control room knew</div></div>
+</section>
+<p class="small muted">These numbers come from an automatic test that ran on GitHub (<a href="https://github.com/cybersentien-ops5/security-lab/actions/runs/42179344856">test 42179344856</a>). Everything is practice data, and the attacks only hit the lab itself.</p>
+
+<section class="grid3">
+  <div class="card layer"><h3><span class="dot" style="background:var(--waf)"></span>The guard</h3><p>Checks every visitor's request and turns away anything that looks like an attack, before it reaches the shop.</p><p class="small muted" style="margin-top:8px">Web application firewall</p></div>
+  <div class="card layer"><h3><span class="dot" style="background:var(--ids)"></span>The watcher</h3><p>Quietly watches all the traffic and raises its own alarm when it recognises an attack, as a second line of defence.</p><p class="small muted" style="margin-top:8px">Intrusion detection</p></div>
+  <div class="card layer"><h3><span class="dot" style="background:var(--siem)"></span>The control room</h3><p>Collects the alarms from the guard and the watcher in one place, so a security team sees what happened straight away.</p><p class="small muted" style="margin-top:8px">SIEM</p></div>
+</section>
+
+<section class="card">
+  <h2>What happened in the test</h2>
+  <ol class="steps">
+    <li>A script tried 12 common attacks on the shop: tricking its database, planting harmful code, and hunting for secret files.</li>
+    <li>The guard stopped all 12 at the door. Normal shopping still worked.</li>
+    <li>The watcher spotted every attack too, and raised its own alarm.</li>
+    <li>Both alarms reached the control room in about 6 seconds, ready for a person to look at.</li>
+  </ol>
+</section>
+
+<details class="card">
+  <summary><strong>For the experts: how it is built</strong></summary>
+  <h2 style="margin-top:16px">How it fits together</h2>
+  <div class="diagram">
+  <svg viewBox="0 0 980 300" width="100%" style="min-width:720px" role="img" aria-label="Architecture: attacker to firewall to Juice Shop; Suricata watches the firewall; both send logs to Wazuh">
+    <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" style="color:var(--muted)"/></marker></defs>
+    <rect class="zone" x="190" y="20" width="270" height="260" rx="12"/><text class="zl" x="205" y="40">DMZ ZONE</text>
+    <rect class="zone" x="500" y="20" width="200" height="110" rx="12"/><text class="zl" x="515" y="40">APP ZONE</text>
+    <rect class="zone" x="500" y="150" width="460" height="130" rx="12"/><text class="zl" x="515" y="170">SIEM ZONE</text>
+    <rect class="box" x="20" y="70" width="140" height="60" rx="10" style="stroke:var(--bad)"/><text x="38" y="96">Attack script</text><text class="sub" x="38" y="114">SQLi · XSS · file scan</text>
+    <rect class="box" x="215" y="60" width="220" height="70" rx="10" style="stroke:var(--waf)"/><text x="232" y="88">Web application firewall</text><text class="sub" x="232" y="108">ModSecurity + OWASP CRS, blocking</text>
+    <rect class="box" x="215" y="190" width="220" height="60" rx="10" style="stroke:var(--ids)"/><text x="232" y="216">Suricata IDS</text><text class="sub" x="232" y="234">same network interface</text>
+    <rect class="box" x="525" y="55" width="150" height="60" rx="10" style="stroke:var(--app)"/><text x="542" y="82">OWASP Juice Shop</text><text class="sub" x="542" y="100">vulnerable web shop</text>
+    <rect class="box" x="525" y="190" width="125" height="60" rx="10" style="stroke:var(--siem)"/><text x="540" y="216">Wazuh manager</text><text class="sub" x="540" y="234">rules + alerts</text>
+    <rect class="box" x="680" y="190" width="125" height="60" rx="10" style="stroke:var(--siem)"/><text x="695" y="216">Wazuh indexer</text><text class="sub" x="695" y="234">stores alerts</text>
+    <rect class="box" x="835" y="190" width="110" height="60" rx="10" style="stroke:var(--siem)"/><text x="848" y="216">Dashboard</text><text class="sub" x="848" y="234">what you see</text>
+    <path class="arrow" d="M160 100 H213"/><text class="sub" x="166" y="92">HTTP</text>
+    <path class="arrow" d="M435 85 H523"/><text class="sub" x="445" y="77">allowed only</text>
+    <path class="arrow" d="M325 188 V132" style="stroke-dasharray:4 3"/><text class="sub" x="332" y="165">watches</text>
+    <path class="arrow" d="M435 115 C480 115 480 205 523 205"/><text class="sub" x="440" y="148">firewall log</text>
+    <path class="arrow" d="M435 225 H523"/><text class="sub" x="447" y="217">eve.json</text>
+    <path class="arrow" d="M650 220 H678"/><path class="arrow" d="M805 220 H833"/>
+  </svg></div>
+  <p class="small muted">The zones are separate networks, so a zone firewall, single sign-on with MFA and automated response can be added later without rebuilding anything.</p>
+</details>
+
+<details class="card">
+  <summary><strong>For the experts: the six automatic checks</strong> <span class="pass">PASS</span></summary>
+  <h2 style="margin-top:16px">What the automated test proved</h2>
+  <ul class="checks"><li><span class="badge ok">PASS</span><div><strong>All lab containers running</strong><br><span class="muted">all 6 lab containers are running</span></div></li><li><span class="badge ok">PASS</span><div><strong>Normal traffic still allowed</strong><br><span class="muted">a normal product search returned HTTP 200</span></div></li><li><span class="badge ok">PASS</span><div><strong>Firewall blocks every attack</strong><br><span class="muted">the WAF returned 403 for all 12 attacks</span></div></li><li><span class="badge ok">PASS</span><div><strong>Firewall alerts reach the SIEM</strong><br><span class="muted">Wazuh holds 12 WAF block alerts (rule 100101)</span></div></li><li><span class="badge ok">PASS</span><div><strong>Suricata alerts reach the SIEM</strong><br><span class="muted">Wazuh holds 12 Suricata alerts</span></div></li><li><span class="badge ok">PASS</span><div><strong>SIEM dashboard loads</strong><br><span class="muted">the Wazuh dashboard login page returned HTTP 200</span></div></li></ul>
+  <p class="small muted" style="margin-top:14px">Firewall rules that fired: 920350, 920440, 930130, 941100, 941110, 941120, 941160, 941170, 941210, 941390, 942100, 942190, 942270, 942360. Machine-readable results: <a href="cybersentien_export.json">cybersentien_export.json</a>.</p>
+</details>
+
+<section class="card">
+  <h2>How it connects to CyberSentien</h2>
+  <p class="muted" style="margin-top:0">Each result from the lab is turned into a line of evidence that CyberSentien can read: what was checked, whether it passed, and what proves it.</p>
+  <details><summary>Show the evidence lines</summary>
+  <div class="flow"><span>Simulated attack</span><b>&rarr;</b><span>Firewall, IDS and SIEM checks</span><b>&rarr;</b><span>Evidence rows (<a href="cybersentien_export.json">JSON</a>)</span><b>&rarr;</b><span>CyberSentien test tenant (next step)</span></div>
+  <div class="tablewrap"><table class="ev"><tbody><tr><td><strong>Lab services running</strong><br><code>lab_containers_running</code></td><td><span class="badge ok">met</span></td><td>All 6 lab containers are running (run 42179344856).<br><span class="muted small">containers juiceshop=000aec64d431, log-init=1a8916285d26, suricata=b1cb8071eb51, waf=a3d8d3a4d187, wazuh.dashboard=6d81204e9a06, wazuh.index</span></td></tr><tr><td><strong>Legitimate traffic allowed</strong><br><code>waf_allows_legitimate_traffic</code></td><td><span class="badge ok">met</span></td><td>A normal product search returned HTTP 200 (run 42179344856).<br><span class="muted small">container waf=a3d8d3a4d187</span></td></tr><tr><td><strong>Web attacks blocked</strong><br><code>waf_blocks_web_attacks</code></td><td><span class="badge ok">met</span></td><td>The WAF returned 403 for all 12 attacks (run 42179344856).<br><span class="muted small">OWASP CRS rules 920350, 920440, 930130, 941100, 941110, 941120, 941160, 941170, 941210, 941390, 942100, 942190, 942270, 942360</span></td></tr><tr><td><strong>Firewall alerts reach the SIEM</strong><br><code>siem_receives_waf_alerts</code></td><td><span class="badge ok">met</span></td><td>Wazuh holds 12 WAF block alerts (rule 100101) (run 42179344856).<br><span class="muted small">Wazuh rule 100101, alert eYy1r6EBzW1f4UzlMCmo</span></td></tr><tr><td><strong>Intrusion detection alerts reach the SIEM</strong><br><code>ids_detects_attacks_in_siem</code></td><td><span class="badge ok">met</span></td><td>Wazuh holds 12 Suricata alerts (run 42179344856).<br><span class="muted small">Suricata sid 9000001, Wazuh rule 86601, alert hoy1r6EBzW1f4UzlMCmo</span></td></tr><tr><td><strong>SIEM dashboard available</strong><br><code>siem_dashboard_available</code></td><td><span class="badge ok">met</span></td><td>The Wazuh dashboard login page returned HTTP 200 (run 42179344856).<br><span class="muted small">container wazuh.dashboard=6d81204e9a06</span></td></tr><tr><td><strong>Time to detect</strong><br><code>time_to_detect</code></td><td><span class="badge info">collected</span></td><td>The first WAF alert was searchable in Wazuh 6 s and the first Suricata alert 6 s after the first attack (run 42179344856).<br><span class="muted small">Wazuh rule 100101; Suricata sid 9000001, Wazuh rule 86601, alert hoy1r6EBzW1f4UzlMCmo</span></td></tr></tbody></table></div></details>
+  <p class="small muted" style="margin-bottom:0">From test 42179344856. Sending these lines into CyberSentien automatically is the next step and is not live yet.</p>
+</section>
+
+<section>
+  <h2>What it looks like</h2>
+  <div class="gallery"><figure><a href="img/blocked_request.png"><img src="img/blocked_request.png" alt="The guard says no" loading="lazy" style="height:150px;object-fit:cover;object-position:top"></a><figcaption><strong>The guard says no</strong><br>This is what an attacker sees: the request is refused (&quot;403 Forbidden&quot;) and never reaches the shop.</figcaption></figure><figure><a href="img/alert_detail.png"><img src="img/alert_detail.png" alt="One alarm, opened in the control room" loading="lazy"></a><figcaption><strong>One alarm, opened in the control room</strong><br>The control room shows exactly what was blocked, when, and where it came from.</figcaption></figure><figure><a href="img/wazuh_overview.png"><img src="img/wazuh_overview.png" alt="The control room&#x27;s front page" loading="lazy"></a><figcaption><strong>The control room&#x27;s front page</strong><br>A summary of all the alarms, sorted by how serious they are.</figcaption></figure></div>
+</section>
+
+<details class="card">
+  <summary><strong>For the experts: run it yourself</strong></summary>
+  <h2 style="margin-top:16px">Run it yourself</h2>
+  <ol class="steps">
+    <li>Install Docker Desktop and give it at least 6 GB of memory.</li>
+    <li><code>git clone https://github.com/cybersentien-ops5/security-lab.git</code></li>
+    <li>In the <code>demo</code> folder, double-click <code>start-demo.command</code>, then <code>attack-demo.command</code>.</li>
+    <li><code>check-demo.command</code> prints PASS or FAIL for each part; <code>stop-demo.command</code> frees the memory.</li>
+  </ol>
+  <p class="small muted">Pinned versions: Wazuh 4.9.2 · OWASP ModSecurity CRS 4.25.2 · OWASP Juice Shop 17.1.1 · Suricata 7.0.17. Source code and every test run: <a href="https://github.com/cybersentien-ops5/security-lab">github.com/cybersentien-ops5/security-lab</a>.</p>
+</details>
+
+<footer>Built by Aneis Samaan, <a href="https://cybersentien.com">CyberSentien</a>. Lab only: synthetic data, attacks confined to the lab's own containers.</footer>
+</div></body></html>
