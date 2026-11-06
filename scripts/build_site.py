@@ -27,6 +27,16 @@ crs = next((r["identity"] for r in export if r["topic"] == "waf_blocks_web_attac
 shots = [("blocked_request", "The firewall's answer to an attack", "A cross-site scripting attempt sent from a browser gets HTTP 403 Forbidden from the web application firewall."),
          ("alert_detail", "One alert, opened in the SIEM", "Wazuh shows the firewall's block as an alert (rule 100101, level 10) with the source, the request and the MITRE ATT&CK technique T1190."),
          ("wazuh_overview", "The SIEM overview", "Wazuh's dashboard home after the attack, with the alert counts by severity.")]
+topic_names = {"lab_containers_running": "Lab services running", "waf_allows_legitimate_traffic": "Legitimate traffic allowed",
+               "waf_blocks_web_attacks": "Web attacks blocked", "siem_receives_waf_alerts": "Firewall alerts reach the SIEM",
+               "ids_detects_attacks_in_siem": "Intrusion detection alerts reach the SIEM", "siem_dashboard_available": "SIEM dashboard available",
+               "time_to_detect": "Time to detect"}
+state_cls = {"met": "ok", "gap": "bad", "collected": "info"}
+evidence = "".join(
+    f'<tr><td><strong>{e(topic_names.get(r["topic"], r["topic"]))}</strong><br><code>{e(r["topic"])}</code></td>'
+    f'<td><span class="badge {state_cls.get(r["state"], "info")}">{e(r["state"])}</span></td>'
+    f'<td>{e(r["detail"])}<br><span class="muted small">{e(r["identity"][:140])}</span></td></tr>'
+    for r in export)
 gallery = "".join(
     f'<figure><a href="img/{k}.png"><img src="img/{k}.png" alt="{e(t)}" loading="lazy"></a>'
     f'<figcaption><strong>{e(t)}</strong><br>{e(d)}</figcaption></figure>'
@@ -51,7 +61,10 @@ section{{margin:28px 0}} .card{{background:var(--card);border:1px solid var(--li
 .tile{{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}} .tile .n{{font-size:32px;font-weight:700;line-height:1.1}} .tile .l{{color:var(--muted);font-size:14px}}
 .pass{{display:inline-flex;align-items:center;gap:8px;background:var(--okbg);color:var(--ok);font-weight:700;border-radius:999px;padding:6px 14px}}
 ul.checks{{list-style:none;padding:0;margin:0;display:grid;gap:10px}} ul.checks li{{display:flex;gap:12px;align-items:flex-start}}
-.badge{{font-size:12px;font-weight:700;border-radius:6px;padding:3px 8px;flex:none;margin-top:2px}} .badge.ok{{background:var(--okbg);color:var(--ok)}} .badge.bad{{background:var(--badbg);color:var(--bad)}}
+.badge{{font-size:12px;font-weight:700;border-radius:6px;padding:3px 8px;flex:none;margin-top:2px}} .badge.ok{{background:var(--okbg);color:var(--ok)}} .badge.bad{{background:var(--badbg);color:var(--bad)}} .badge.info{{background:var(--bg);color:var(--accent);border:1px solid var(--line)}}
+table.ev{{width:100%;border-collapse:collapse;font-size:14px}} table.ev td{{border-top:1px solid var(--line);padding:10px 8px;vertical-align:top}} table.ev td:first-child{{width:30%}} table.ev td:nth-child(2){{width:90px}}
+.flow{{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 16px}} .flow span{{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:14px}} .flow b{{color:var(--muted)}}
+.tablewrap{{overflow-x:auto}}
 .muted{{color:var(--muted)}} .small{{font-size:14px}}
 figure{{margin:0;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}} figure img{{display:block;width:100%;height:auto;border-bottom:1px solid var(--line)}} figcaption{{padding:12px 14px;font-size:14px;color:var(--muted)}} figcaption strong{{color:var(--ink)}}
 .gallery{{display:grid;grid-template-columns:1fr;gap:18px;max-width:980px}}
@@ -63,7 +76,7 @@ footer{{padding:30px 0 50px;color:var(--muted);font-size:14px}}
 <header>
   <h1>Security Lab: catching a web attack three ways</h1>
   <p class="lead">A web application firewall, intrusion detection and a SIEM working together on a deliberately vulnerable web shop. A scripted attack is sent, the firewall blocks it, and the SIEM shows the firewall and Suricata alerts within seconds.</p>
-  <div class="by">Aneis Samaan</div>
+  <div class="by">Aneis Samaan · <a href="https://cybersentien.com">CyberSentien</a></div>
 </header>
 
 <section class="tiles" aria-label="Latest results">
@@ -111,6 +124,14 @@ footer{{padding:30px 0 50px;color:var(--muted);font-size:14px}}
   <p class="small muted" style="margin-top:14px">Firewall rules that fired: {e(crs.replace('OWASP CRS rules ', ''))}. Machine-readable results: <a href="cybersentien_export.json">cybersentien_export.json</a>.</p>
 </section>
 
+<section class="card">
+  <h2>How the lab feeds CyberSentien</h2>
+  <p class="muted" style="margin-top:0">Every check the lab runs becomes an evidence row in the format the CyberSentien readiness engine reads: what was checked, whether it is met or a gap, the measured figure, and the exact rule, alert or container that proves it. Only measured results become rows.</p>
+  <div class="flow"><span>Simulated attack</span><b>&rarr;</b><span>Firewall, IDS and SIEM checks</span><b>&rarr;</b><span>Evidence rows (<a href="cybersentien_export.json">JSON</a>)</span><b>&rarr;</b><span>CyberSentien test tenant (next step)</span></div>
+  <div class="tablewrap"><table class="ev"><tbody>{evidence}</tbody></table></div>
+  <p class="small muted" style="margin-bottom:0">From run {e(rid)}. Importing these rows into CyberSentien's test tenant is the next step of the build and is not live yet.</p>
+</section>
+
 <section>
   <h2>Screenshots from that run</h2>
   <div class="gallery">{gallery}</div>
@@ -127,7 +148,7 @@ footer{{padding:30px 0 50px;color:var(--muted);font-size:14px}}
   <p class="small muted">Pinned versions: Wazuh 4.9.2 · OWASP ModSecurity CRS 4.25.2 · OWASP Juice Shop 17.1.1 · Suricata 7.0.17. Source code and every test run: <a href="{REPO}">{REPO.replace('https://', '')}</a>.</p>
 </section>
 
-<footer>Built by Aneis Samaan. Lab only: synthetic data, attacks confined to the lab's own containers.</footer>
+<footer>Built by Aneis Samaan, <a href="https://cybersentien.com">CyberSentien</a>. Lab only: synthetic data, attacks confined to the lab's own containers.</footer>
 </div></body></html>
 """
 (out / "index.html").write_text(page)
