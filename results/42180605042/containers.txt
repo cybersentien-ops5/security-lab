@@ -1,0 +1,7 @@
+acd51405f410 suricata
+02400b190c86 wazuh.dashboard
+ba40582a8f3a waf
+a823cc95047f wazuh.manager
+48320c5b6383 juiceshop
+6d092264d3ca log-init
+f9518f2f6bfd wazuh.indexer

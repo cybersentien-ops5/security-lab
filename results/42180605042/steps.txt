@@ -1,0 +1,2 @@
+health=success attack=success check=success screenshots=success
+commit=52cb24e1e9b2917fdfdc99d821332229d52c44db
