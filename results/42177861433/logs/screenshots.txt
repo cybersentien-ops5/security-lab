@@ -1,0 +1,20 @@
+      src/greenlet/TPythonState.cpp:181:42: error: invalid use of incomplete type ‘_PyInterpreterFrame’ {aka ‘struct _PyInterpreterFrame’}
+        181 |         memcpy(&iframe->previous, &iframe->frame_obj->_f_frame_data[0],
+            |                                          ^~
+      /usr/include/python3.14/cpython/pyframe.h:25:8: note: forward declaration of ‘_PyInterpreterFrame’ {aka ‘struct _PyInterpreterFrame’}
+         25 | struct _PyInterpreterFrame;
+            |        ^~~~~~~~~~~~~~~~~~~
+      src/greenlet/TPythonState.cpp: In member function ‘void greenlet::PythonState::operator>>(PyThreadState*)’:
+      src/greenlet/TPythonState.cpp:212:13: error: ‘PyThreadState’ {aka ‘struct _ts’} has no member named ‘c_recursion_remaining’; did you mean ‘py_recursion_remaining’?
+        212 |     tstate->c_recursion_remaining = Py_C_RECURSION_LIMIT - this->c_recursion_depth;
+            |             ^~~~~~~~~~~~~~~~~~~~~
+            |             py_recursion_remaining
+      src/greenlet/TPythonState.cpp:212:37: error: ‘Py_C_RECURSION_LIMIT’ was not declared in this scope
+        212 |     tstate->c_recursion_remaining = Py_C_RECURSION_LIMIT - this->c_recursion_depth;
+            |                                     ^~~~~~~~~~~~~~~~~~~~
+      error: Command '['x86_64-linux-gnu-g++', '-fno-strict-overflow', '-Wsign-compare', '-DNDEBUG', '-g', '-O2', '-Wall', '-fPIC', '-I/tmp/pw/include', '-I/usr/include/python3.14', '-c', 'src/greenlet/greenlet.cpp', '-o', 'build/temp.linux-x86_64-cpython-314/src/greenlet/greenlet.o']' returned non-zero exit status 1.
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for greenlet
+ERROR: Failed to build installable wheels for some pyproject.toml based projects (greenlet)

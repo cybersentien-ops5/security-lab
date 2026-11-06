@@ -1,0 +1,6 @@
+seclab-suricata-1 45.18MiB / 512MiB
+seclab-wazuh.dashboard-1 188.1MiB / 1GiB
+seclab-waf-1 50.74MiB / 256MiB
+seclab-wazuh.manager-1 341.1MiB / 1.172GiB
+seclab-juiceshop-1 92.73MiB / 512MiB
+seclab-wazuh.indexer-1 1.46GiB / 2GiB
