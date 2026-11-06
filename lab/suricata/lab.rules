@@ -1,0 +1,16 @@
+# Security lab Suricata rules. Each signature follows a published, well-known pattern
+# (OWASP / Emerging Threats style). They match only HTTP traffic to the lab's WAF.
+# SIDs 9000001-9000099 are reserved for the lab.
+
+# SQL injection
+alert http any any -> any any (msg:"LAB SQL injection attempt - UNION SELECT in URI"; flow:established,to_server; http.uri; content:"union"; nocase; content:"select"; nocase; distance:0; classtype:web-application-attack; metadata:mitre_technique_id T1190; sid:9000001; rev:1;)
+alert http any any -> any any (msg:"LAB SQL injection attempt - OR 1=1 tautology"; flow:established,to_server; http.request_body; content:"' OR 1=1"; nocase; classtype:web-application-attack; metadata:mitre_technique_id T1190; sid:9000002; rev:1;)
+alert http any any -> any any (msg:"LAB SQL injection attempt - OR 1=1 tautology in URI"; flow:established,to_server; http.uri; content:"' OR 1=1"; nocase; classtype:web-application-attack; metadata:mitre_technique_id T1190; sid:9000003; rev:1;)
+
+# Cross-site scripting
+alert http any any -> any any (msg:"LAB XSS attempt - script tag in URI"; flow:established,to_server; http.uri; content:"<script"; nocase; classtype:web-application-attack; metadata:mitre_technique_id T1059.007; sid:9000010; rev:1;)
+alert http any any -> any any (msg:"LAB XSS attempt - javascript: URI scheme"; flow:established,to_server; http.uri; content:"javascript:"; nocase; classtype:web-application-attack; metadata:mitre_technique_id T1059.007; sid:9000011; rev:1;)
+alert http any any -> any any (msg:"LAB XSS attempt - event handler in URI"; flow:established,to_server; http.uri; pcre:"/on(error|load|mouseover)\s*=/i"; classtype:web-application-attack; metadata:mitre_technique_id T1059.007; sid:9000012; rev:1;)
+
+# Directory / sensitive file scan
+alert http any any -> any any (msg:"LAB directory scan - sensitive file probe"; flow:established,to_server; http.uri; pcre:"/\/(\.git\/|\.env|\.htaccess|\.svn\/|wp-config\.php|server-status|backup\.(zip|sql|tar))/i"; classtype:attempted-recon; metadata:mitre_technique_id T1595.003; sid:9000020; rev:1;)

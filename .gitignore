@@ -1,0 +1,5 @@
+lab/wazuh/certs/
+demo/.last-run/
+out/
+__pycache__/
+.DS_Store

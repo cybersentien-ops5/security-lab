@@ -1,0 +1,24 @@
+<!-- Security lab custom rules. IDs 100100-100199 are reserved for the lab.
+     Suricata alerts use Wazuh's built-in Suricata rules (group "suricata"). -->
+<group name="lab,waf,modsecurity,web,attack,">
+
+  <!-- Any ModSecurity audit record (JSON, one transaction per line) -->
+  <rule id="100100" level="3">
+    <decoded_as>json</decoded_as>
+    <field name="transaction.client_ip">\.+</field>
+    <field name="transaction.request.uri">\.+</field>
+    <description>WAF (ModSecurity CRS) audit event: $(transaction.request.method) $(transaction.request.uri)</description>
+  </rule>
+
+  <!-- The WAF refused the request: Core Rule Set blocking mode returned 403 -->
+  <rule id="100101" level="10">
+    <if_sid>100100</if_sid>
+    <field name="transaction.response.http_code">^403$</field>
+    <description>WAF blocked a web attack from $(transaction.client_ip): $(transaction.request.method) $(transaction.request.uri)</description>
+    <mitre>
+      <id>T1190</id>
+    </mitre>
+    <group>waf_block,</group>
+  </rule>
+
+</group>
