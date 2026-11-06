@@ -1,0 +1,63 @@
+{
+  "run_id": "42181542237",
+  "run_url": "https://github.com/cybersentien-ops5/security-lab/actions/runs/42181542237",
+  "overall": "PASS",
+  "attacks_sent": 12,
+  "attacks_blocked": 12,
+  "waf_alerts_in_wazuh": 12,
+  "suricata_alerts_in_wazuh": 12,
+  "seconds_to_waf_alert": 6,
+  "seconds_to_suricata_alert": 6,
+  "checks": [
+    {
+      "part": "containers_running",
+      "result": "PASS",
+      "value": "6",
+      "reason": "all 6 lab containers are running"
+    },
+    {
+      "part": "waf_allows_normal_traffic",
+      "result": "PASS",
+      "value": "200",
+      "reason": "a normal product search returned HTTP 200"
+    },
+    {
+      "part": "waf_blocks_attacks",
+      "result": "PASS",
+      "value": "12/12",
+      "reason": "the WAF returned 403 for all 12 attacks"
+    },
+    {
+      "part": "wazuh_has_waf_alert",
+      "result": "PASS",
+      "value": "12",
+      "reason": "Wazuh holds 12 WAF block alerts (rule 100101)"
+    },
+    {
+      "part": "wazuh_has_ids_alert",
+      "result": "PASS",
+      "value": "12",
+      "reason": "Wazuh holds 12 Suricata alerts"
+    },
+    {
+      "part": "dashboard_loads",
+      "result": "PASS",
+      "value": "200",
+      "reason": "the Wazuh dashboard login page returned HTTP 200"
+    }
+  ],
+  "screenshots": {
+    "blocked_request": {
+      "captured": true,
+      "detail": "browser request http://127.0.0.1:8080/rest/products/search?q=%3Cscript%3Ealert%281%29%3C/script%3E answered HTTP 403"
+    },
+    "wazuh_overview": {
+      "captured": true,
+      "detail": "Wazuh dashboard home after login"
+    },
+    "alert_detail": {
+      "captured": true,
+      "detail": "Discover, query rule.id:100101, first alert expanded"
+    }
+  }
+}
