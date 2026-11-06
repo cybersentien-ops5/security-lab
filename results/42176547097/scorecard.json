@@ -1,0 +1,13 @@
+{
+  "run_id": "42176547097",
+  "run_url": "https://github.com/cybersentien-ops5/security-lab/actions/runs/42176547097",
+  "overall": "NOT VERIFIED",
+  "attacks_sent": null,
+  "attacks_blocked": null,
+  "waf_alerts_in_wazuh": null,
+  "suricata_alerts_in_wazuh": null,
+  "seconds_to_waf_alert": null,
+  "seconds_to_suricata_alert": null,
+  "checks": [],
+  "screenshots": {}
+}
