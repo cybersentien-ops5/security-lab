@@ -1,0 +1,30 @@
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:33 wazuh-analysisd: ERROR: Too many fields for JSON decoder.
+2026/11/06 07:15:35 wazuh-modulesd:vulnerability-scanner: INFO: Database decompression finished.
+2026/11/06 07:15:39 wazuh-modulesd:vulnerability-scanner: INFO: Vulnerability scanner module started.

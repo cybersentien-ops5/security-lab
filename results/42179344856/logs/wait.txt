@@ -1,0 +1,2 @@
+  [   0s] waf=200 indexer=000 wazuh-api=000 dashboard=503 suricata=yes
+  [  10s] waf=200 indexer=200 wazuh-api=200 dashboard=200 suricata=yes

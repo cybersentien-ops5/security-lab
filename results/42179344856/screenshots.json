@@ -1,0 +1,14 @@
+{
+  "blocked_request": {
+    "captured": true,
+    "detail": "browser request http://127.0.0.1:8080/rest/products/search?q=%3Cscript%3Ealert%281%29%3C/script%3E answered HTTP 403"
+  },
+  "wazuh_overview": {
+    "captured": true,
+    "detail": "Wazuh dashboard home after login"
+  },
+  "alert_detail": {
+    "captured": true,
+    "detail": "Discover, query rule.id:100101, first alert expanded"
+  }
+}
