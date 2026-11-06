@@ -9,6 +9,7 @@ Repo: https://github.com/cybersentien-ops5/security-lab  ·  Results of every CI
 - **Green run 42179344856** (commit c756ee8): all 6 checks PASS, 12/12 attacks blocked (HTTP 403), 12 WAF + 12 Suricata alerts in Wazuh, 6 s to first alert for both, 3 screenshots captured. README "Latest results" and docs/proof/ copied from this run.
 - Laptop kit: demo/start-demo.command, attack-demo.command, check-demo.command, stop-demo.command, demo/README.md (5-step panel script).
 - docs/ROADMAP.md for the full build.
+- **Public web page online:** https://cybersentien-ops5.github.io/security-lab/ (GitHub Pages from branch gh-pages, built by .github/workflows/pages.yml from docs/proof/; pages run 42180629859 confirmed HTTP 200 and Pages status "built").
 
 ## Next
 - Nothing required. Optional: run the kit on the Mac once before the interview.
