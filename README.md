@@ -1,6 +1,6 @@
 # Security Lab: SIEM, Web Application Firewall and Intrusion Detection
 
-**Author: Aneis Samaan**
+**Author: Aneis Samaan** · **Web page: https://cybersentien-ops5.github.io/security-lab/**
 
 A small, self-contained security lab that shows three defensive layers catching a simulated web attack:
 
