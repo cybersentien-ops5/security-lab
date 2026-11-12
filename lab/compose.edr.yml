@@ -1,0 +1,11 @@
+# EDR overlay: used with lab/compose.yml by .github/workflows/edr-ips.yml.
+# Opens the manager's agent ports on 127.0.0.1 so the runner itself can enrol as an endpoint,
+# and swaps in a manager config whose only change is one active-response block.
+services:
+  wazuh.manager:
+    ports:
+      - "127.0.0.1:55000:55000"
+      - "127.0.0.1:1514:1514"
+      - "127.0.0.1:1515:1515"
+    volumes:
+      - ./wazuh/config/wazuh_cluster/wazuh_manager.edr.conf:/wazuh-config-mount/etc/ossec.conf
