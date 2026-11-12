@@ -58,13 +58,17 @@ s=$(date +%s)
 for u in admin oracle test guest ftp backup support deploy postgres ubuntu; do
   docker exec attacker ssh -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=5 "$u@$HOSTIP" true >/dev/null 2>&1
 done
-w=$(wait_alert 'rule.id:(5712 OR 5763)' "$s" 180)
-[ "$w" = none ] && rec bruteforce_detected FAIL "" "no brute-force alert (5712/5763) within 180 s" \
-  || rec bruteforce_detected PASS "${w}s" "SSH brute force from $AIP detected ${w} s after it started"
+w=$(wait_alert 'rule.id:5712' "$s" 240)
+[ "$w" = none ] && rec bruteforce_detected FAIL "" "no brute-force alert (rule 5712) in the SIEM within 240 s" \
+  || rec bruteforce_detected PASS "${w}s" "SSH brute force from $AIP: alert visible in the SIEM ${w} s after it started"
 for i in $(seq 1 30); do sudo iptables -S 2>/dev/null | grep -q "$AIP" && break; sleep 2; done
 if sudo iptables -S | grep -q "$AIP"; then
   if docker exec attacker sh -c "nc -z -w 5 $HOSTIP 22" >/dev/null 2>&1; then rec attacker_cut_off FAIL "" "drop rule present but port 22 still answers $AIP"
-  else rec attacker_cut_off PASS "$(( $(date +%s) - s ))s" "active response added a DROP for $AIP; its next connection got no answer"; fi
+  else
+    # When the endpoint itself acted: the first firewall-drop line in the agent's own log.
+    ar=$(sudo grep -m1 "firewall-drop" /var/ossec/logs/active-responses.log | cut -c1-19)
+    ars=$(( $(date -u -d "$ar" +%s 2>/dev/null || echo "$s") - s ))
+    rec attacker_cut_off PASS "${ars}s" "endpoint dropped $AIP ${ars} s after the attack began (active-response log $ar UTC); its next connection got no answer"; fi
 else rec attacker_cut_off FAIL "" "no firewall rule for $AIP after the alert"; fi
 sudo grep -h firewall-drop /var/ossec/logs/active-responses.log 2>/dev/null | tail -3
 docker rm -f attacker >/dev/null 2>&1

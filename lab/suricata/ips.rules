@@ -1,4 +1,4 @@
 # IPS lab: Suricata inline (NFQUEUE). "drop" rules stop the packet; "alert" rules only report.
 drop http any any -> any any (msg:"LAB IPS path traversal to /etc/passwd"; flow:to_server,established; http.uri; content:"/etc/passwd"; nocase; classtype:web-application-attack; sid:1000201; rev:1;)
 drop http any any -> any any (msg:"LAB IPS SQL injection UNION SELECT"; flow:to_server,established; http.uri; content:"union"; nocase; content:"select"; nocase; distance:0; classtype:web-application-attack; sid:1000202; rev:1;)
-drop http any any -> any any (msg:"LAB IPS command injection ;cat"; flow:to_server,established; http.uri; content:"|3b|cat"; nocase; classtype:web-application-attack; sid:1000203; rev:1;)
+drop http any any -> any any (msg:"LAB IPS command injection ;cat"; flow:to_server,established; http.uri.raw; content:";cat"; nocase; classtype:web-application-attack; sid:1000203; rev:1;)
