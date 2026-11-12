@@ -17,10 +17,13 @@ sleep 1
 # No --queue-bypass: if Suricata is not running, the traffic stops (fail closed).
 docker run -d --name ips --net host --cap-add NET_ADMIN --cap-add NET_RAW --cap-add SYS_NICE \
   -v "$HERE/lab/suricata/ips.rules:/lab/ips.rules:ro" -v "$OUT/suricata:/var/log/suricata" \
-  "$IMG" -q 0 -k none -S /lab/ips.rules >/dev/null
+  "$IMG" -v -q 0 -k none -S /lab/ips.rules >/dev/null
 for i in $(seq 1 60); do docker logs ips 2>&1 | grep -q "Engine started" && break; sleep 2; done
 docker logs ips 2>&1 | grep -q "Engine started" && rec ips_engine_inline PASS "Suricata started in NFQUEUE (inline) mode" \
   || { rec ips_engine_inline FAIL "Suricata did not start"; docker logs ips 2>&1 | tail -20; }
+loaded=$(docker logs ips 2>&1 | grep -o '[0-9]* rules successfully loaded' | head -1); bad=$(docker logs ips 2>&1 | grep -c 'error parsing signature' || true)
+want=$(grep -c '^drop' "$HERE/lab/suricata/ips.rules")
+[ "$bad" = 0 ] && [ "${loaded%% *}" = "$want" ] && rec ips_rules_loaded PASS "$loaded (of $want), 0 parse errors" || { rec ips_rules_loaded FAIL "loaded: '$loaded' of $want, parse errors: $bad"; docker logs ips 2>&1 | grep -i 'error' | head -5; }
 sudo iptables -I INPUT -i lo -p tcp --dport "$PORT" -j NFQUEUE --queue-num 0
 sudo iptables -I INPUT -i lo -p tcp --sport "$PORT" -j NFQUEUE --queue-num 0
 
