@@ -1,0 +1,20 @@
+74be3244b926: Pulling fs layer
+02de03a7213b: Pulling fs layer
+d88d0de5497b: Pulling fs layer
+02de03a7213b: Download complete
+74be3244b926: Download complete
+d88d0de5497b: Download complete
+02de03a7213b: Pull complete
+74be3244b926: Pull complete
+d88d0de5497b: Pull complete
+42159dc8489d: Download complete
+42159dc8489d: Pull complete
+Digest: sha256:a7f6cf3ae520c9d670ad956572c13747ed5abdbba5123a01526f873ed1662528
+Status: Downloaded newer image for mcr.microsoft.com/playwright/python:v1.56.0-noble
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.3 -> 26.3
+[notice] To update, run: python -m pip install --upgrade pip
+blocked_request: captured - browser request http://127.0.0.1:8080/rest/products/search?q=%3Cscript%3Ealert%281%29%3C/script%3E answered HTTP 403
+wazuh_overview: captured - Wazuh dashboard home after login
+alert_detail: captured - Discover, query rule.id:100101, first alert expanded

@@ -1,0 +1,16 @@
+Normal request (should be allowed):
+  normal search -> HTTP 200
+Attacks (should be blocked with HTTP 403):
+  sqli   login_or_1_equals_1          -> HTTP 403
+  sqli   search_union_select          -> HTTP 403
+  sqli   search_or_1_equals_1         -> HTTP 403
+  xss    script_tag                   -> HTTP 403
+  xss    iframe_javascript            -> HTTP 403
+  xss    img_onerror                  -> HTTP 403
+  scan   probe/.git/HEAD              -> HTTP 403
+  scan   probe/.env                   -> HTTP 403
+  scan   probe/.htaccess              -> HTTP 403
+  scan   probe/.svn/entries           -> HTTP 403
+  scan   probe/wp-config.php.bak      -> HTTP 403
+  scan   probe/backup.sql             -> HTTP 403
+Sent 12 attacks, WAF blocked 12.
