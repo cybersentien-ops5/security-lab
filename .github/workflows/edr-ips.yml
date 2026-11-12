@@ -85,12 +85,19 @@ jobs:
           s = s.replace("<syscheck>", "<syscheck>\n    <directories realtime=\"yes\" check_all=\"yes\">/etc/cron.d,/etc/systemd/system,/tmp</directories>", 1)
           if "/var/log/auth.log" not in s:
               s = s.replace("</ossec_config>", "  <localfile><log_format>syslog</log_format><location>/var/log/auth.log</location></localfile>\n</ossec_config>", 1)
+          # Larger agent buffer: the first minutes after start (inventory scan, journal catch-up) flooded the default one and lost events.
+          s = re.sub(r"<queue_size>\d+</queue_size>", "<queue_size>100000</queue_size>", s)
+          s = re.sub(r"<events_per_second>\d+</events_per_second>", "<events_per_second>1000</events_per_second>", s)
           open(p, "w").write(s)
           PY
           sudo grep -n "realtime\|auth.log" /var/ossec/etc/ossec.conf
           sudo systemctl start wazuh-agent
-          for i in $(seq 1 60); do sudo grep -q "File integrity monitoring scan ended" /var/ossec/logs/ossec.log && break; sleep 5; done
-          sudo grep -E "Connected to the server|scan ended|Real-time" /var/ossec/logs/ossec.log | tail -5
+          # Wait until file monitoring AND log reading are both running, then let the start-up burst drain.
+          # (Run 3 lost the new-user event: it was created before the log reader had started.)
+          for i in $(seq 1 60); do sudo grep -q "File integrity monitoring scan ended" /var/ossec/logs/ossec.log && sudo grep -q "Monitoring journal entries" /var/ossec/logs/ossec.log && break; sleep 5; done
+          for i in $(seq 1 24); do sudo grep -q "syscollector: INFO: Evaluation finished" /var/ossec/logs/ossec.log && break; sleep 5; done
+          sleep 20
+          sudo grep -E "Connected to the server|scan ended|Real-time|journal|Evaluation finished|buffer" /var/ossec/logs/ossec.log | tail -8
 
       - name: EDR test (Atomic Red Team on the endpoint, brute force and cut-off)
         run: bash demo/edr_test.sh
