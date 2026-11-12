@@ -1,0 +1,114 @@
+name: edr-ips
+
+# Two lab checks the security lab did not have:
+#   ips - Suricata INLINE (NFQUEUE) in front of a small web server: attacks must be dropped, not just reported.
+#   edr - the runner is an endpoint with a Wazuh agent; Atomic Red Team attacks must raise SIEM alerts,
+#         and an SSH brute force must be detected and the attacker cut off by active response.
+# Synthetic only. Contacts Docker Hub, packages.wazuh.com and raw.githubusercontent.com (Atomic Red Team).
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, edr-ips]
+    paths:
+      - "demo/edr_test.sh"
+      - "demo/ips_test.sh"
+      - "lab/compose.edr.yml"
+      - "lab/suricata/ips.rules"
+      - "lab/wazuh/config/wazuh_cluster/wazuh_manager.edr.conf"
+      - ".github/workflows/edr-ips.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: edr-ips
+  cancel-in-progress: false
+
+jobs:
+  ips:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      OUT_DIR: ${{ github.workspace }}/out
+    steps:
+      - uses: actions/checkout@v4
+      - name: IPS test (Suricata inline)
+        run: bash demo/ips_test.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: ips-results, path: out/, retention-days: 30 }
+
+  edr:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      OUT_DIR: ${{ github.workspace }}/out
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Free disk space and set the indexer's kernel setting
+        run: |
+          sudo rm -rf /usr/share/dotnet /opt/ghc /opt/hostedtoolcache/CodeQL || true
+          sudo sysctl -w vm.max_map_count=262144
+          mkdir -p "$OUT_DIR"
+
+      - name: Start the SIEM (Wazuh manager and indexer only)
+        run: |
+          . demo/lib.sh
+          lab_certs
+          docker compose -f lab/compose.yml -f lab/compose.edr.yml pull -q wazuh.manager wazuh.indexer log-init
+          docker compose -f lab/compose.yml -f lab/compose.edr.yml up -d wazuh.indexer wazuh.manager
+          for i in $(seq 1 90); do
+            c2=$(http_code "$INDEXER_URL/_cluster/health" -u "$WAZUH_USER:$WAZUH_PASS")
+            c3=$(http_code "$API_URL/security/user/authenticate" -u "$API_USER:$API_PASS" -X POST)
+            echo "  indexer=$c2 api=$c3"; [ "$c2" = 200 ] && [ "$c3" = 200 ] && break; sleep 10
+          done
+          [ "$c2" = 200 ] && [ "$c3" = 200 ]
+
+      - name: Make the runner an endpoint (rsyslog, sshd, Wazuh agent 4.9.2)
+        run: |
+          set -e
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq rsyslog openssh-server >/dev/null
+          sudo systemctl start rsyslog ssh
+          sudo touch /var/log/auth.log
+          curl -fsSL https://packages.wazuh.com/key/GPG-KEY-WAZUH | sudo gpg --dearmor -o /usr/share/keyrings/wazuh.gpg
+          echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" | sudo tee /etc/apt/sources.list.d/wazuh.list >/dev/null
+          sudo apt-get update -qq
+          sudo WAZUH_MANAGER=127.0.0.1 WAZUH_AGENT_NAME=lab-endpoint apt-get install -y -qq wazuh-agent=4.9.2-1 >/dev/null
+          # File integrity: watch persistence locations and /tmp in real time (and nothing else, so the first scan is quick).
+          sudo python3 - <<'PY'
+          import re
+          p = "/var/ossec/etc/ossec.conf"; s = open(p).read()
+          s = re.sub(r"\s*<directories>[^<]*</directories>", "", s)
+          s = s.replace("<syscheck>", "<syscheck>\n    <directories realtime=\"yes\" check_all=\"yes\">/etc/cron.d,/etc/systemd/system,/tmp</directories>", 1)
+          if "/var/log/auth.log" not in s:
+              s = s.replace("</ossec_config>", "  <localfile><log_format>syslog</log_format><location>/var/log/auth.log</location></localfile>\n</ossec_config>", 1)
+          # Larger agent buffer: the first minutes after start (inventory scan, journal catch-up) flooded the default one and lost events.
+          s = re.sub(r"<queue_size>\d+</queue_size>", "<queue_size>100000</queue_size>", s)
+          s = re.sub(r"<events_per_second>\d+</events_per_second>", "<events_per_second>1000</events_per_second>", s)
+          open(p, "w").write(s)
+          PY
+          sudo grep -n "realtime\|auth.log" /var/ossec/etc/ossec.conf
+          sudo systemctl start wazuh-agent
+          # Wait until file monitoring AND log reading are both running, then let the start-up burst drain.
+          # (Run 3 lost the new-user event: it was created before the log reader had started.)
+          for i in $(seq 1 60); do sudo grep -q "File integrity monitoring scan ended" /var/ossec/logs/ossec.log && sudo grep -q "Monitoring journal entries" /var/ossec/logs/ossec.log && break; sleep 5; done
+          for i in $(seq 1 24); do sudo grep -q "syscollector: INFO: Evaluation finished" /var/ossec/logs/ossec.log && break; sleep 5; done
+          sleep 20
+          sudo grep -E "Connected to the server|scan ended|Real-time|journal|Evaluation finished|buffer" /var/ossec/logs/ossec.log | tail -8
+
+      - name: EDR test (Atomic Red Team on the endpoint, brute force and cut-off)
+        run: bash demo/edr_test.sh
+
+      - name: Logs on failure
+        if: failure()
+        run: |
+          sudo tail -n 40 /var/ossec/logs/ossec.log || true
+          sudo tail -n 20 /var/log/auth.log || true
+          docker compose -f lab/compose.yml -f lab/compose.edr.yml logs --tail 40 wazuh.manager || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: edr-results, path: out/, retention-days: 30 }
